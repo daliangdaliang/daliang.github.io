@@ -21,7 +21,11 @@ openwrt路由器是以盘路由模式接入到原有网络里面
 
 原有网络：192.168.16.0/24 
 
+其他配置，在很多的教程里面也有，主要是网络-防火墙-常规设置（参考韩风视频 https://www.bilibili.com/video/BV1Vh411F7Mr/?spm_id_from=333.999.0.0&vd_source=70818322bc017d9a7c3eed24b20ee5a9 ）
 
+lan-wan/zerotier accept accept accept masquerading(重点在这里，要打开)
+wan-reject reject accept reject masquerading
+zerotier-lan/wan accept accept accept masquerading
 
 2.其他能连接网络的设备
 例如：手机、电脑、平板等
@@ -35,3 +39,4 @@ ip地址：192.168.16.105
 路由：192.168.16.13
 dns：192.168.16.13
 
+主要是把ip地址，路由和dns都要修改为旁路由，这样就可以搞定了。
