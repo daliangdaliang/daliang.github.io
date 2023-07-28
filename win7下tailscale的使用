@@ -1,0 +1,14 @@
+1.安装tailscale后，win7的最高版本无法安装。每次会重新选择网络适配器的性质，选择家庭即可。
+
+2.如果不用的时候，可以把每次开机启动关闭。win+r，然后输入msconfig，将tailscale的开机项目取消掉。
+
+后面如果要用的时候，再打开即可。
+
+
+tailscale每次因为要重新选择适配器，导致了要关闭程序后，再打开才能链接上。
+
+
+这个问题是已经咨询过官方，回答是win7不再支持，这个bug也不回再修复了。
+
+https://github.com/tailscale/tailscale/issues/5678#issuecomment-1652906352
+
