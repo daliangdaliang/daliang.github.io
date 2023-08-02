@@ -1,0 +1,9 @@
+https://www.abackup.com/easybackup-tutorials/clonezilla-destination-disk-is-too-small-666.html
+
+
+问题：再生龙恢复数据的时候，会检查目标磁盘的大小，如果小于源磁盘，就会报错。
+
+打开icds就忽略上述检查。
+
+用高级模式，打开icds模式
+
