@@ -1,0 +1,13 @@
+
+
+实际解决方法：
+用 pe 加载了 cmd ，然后运行 chkdsk X： /f 把整个硬盘分区全部都修复了一遍，提示修复了数图错误。然后现在两者应该一样，现在克隆没问题了。
+
+类似的，如果用 win7 安装光盘来修复，应该也是没问题。
+
+
+如果是怕pe里面有问题，用win7官方安装程序修复是最稳妥。
+
+https://www.v2ex.com/t/962488#reply1
+
+https://sourceforge.net/p/clonezilla/discussion/Open_discussion/thread/8ac8cbfb7d/
