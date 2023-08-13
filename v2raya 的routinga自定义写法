@@ -1,0 +1,13 @@
+今天更新了v2raya的新版本，想着alist和resilio的下载，都大量要经过v2raya，这样有点给系统增加负担。
+
+给特定程序绕过v2raya的透明代理，就需要用到了官方给出的routinga的配置。
+
+
+参考地址
+
+https://v2raya.org/docs/manual/routinga/
+
+
+规则端口-routingA
+透明代理-与规则端口所选模式一致
+
