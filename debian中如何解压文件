@@ -1,0 +1,6 @@
+# 安装 unzip（如果尚未安装）
+sudo apt-get update
+sudo apt-get install unzip
+
+# 解压 ZIP 文件并使用文件名作为文件夹名
+unzip 文件名.zip -d "$(basename -s .zip 文件名)"
