@@ -1,0 +1,9 @@
+出差在外，win7系统里面onedrive无法启动
+
+搜索了错误代码，0x8004de40 
+
+后面根据微软系官方说明操作，最后还是成功了
+
+https://learn.microsoft.com/zh-cn/sharepoint/troubleshoot/sync/error-0x8004de40-in-onedrive
+
+https://support.microsoft.com/en-us/office/reset-onedrive-34701e00-bf7b-42db-b960-84905399050c
