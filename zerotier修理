@@ -1,0 +1,125 @@
+自从nas的zerotier升级到了1.14.2，就间歇性出现问题
+
+尝试了很多次，最后还是卸载掉，重新安装
+
+注意问题就是，如果要本地局域网访问，要开启转发
+
+
+
+通过 route -n 可以查看，到底哪些网络接口
+
+
+得到了
+enp3XXs0 对应  192.16X.0.0
+ztmXXX 对应   192.168.X.0 （x为马赛克）
+
+那么对应的开启本地转发
+
+PHY_IFACE=eth0; ZT_IFACE=zt7nnig26
+
+sudo iptables -t nat -A POSTROUTING -o $PHY_IFACE -j MASQUERADE
+sudo iptables -A FORWARD -i $PHY_IFACE -o $ZT_IFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i $ZT_IFACE -o $PHY_IFACE -j ACCEPT
+
+对应替换内容就可以了
+
+https://docs.zerotier.com/route-between-phys-and-virt#configure-iptables
+
+Route between ZeroTier and Physical Networks
+ZeroTier 和物理网络之间的路由
+This seems to be the simplest pattern for getting remote access to your LAN. It doesn't require access to the LAN's router or have some of the pitfalls of bridging. This requires a Linux PC or VM, something that runs iptables, on your LAN. A Raspberry Pi works. This is a NAT/Masquerade setup.
+这似乎是远程访问 LAN 的最简单模式。它不需要访问 LAN 的路由器，也不需要桥接的一些陷阱。这需要 Linux PC 或 VM，在您的 LAN 上运行 iptables。Raspberry Pi 有效。这是 NAT/Masquerade 设置。
+
+If you have a router that can run zerotier, you should use that instead of this article. Many router vendors and operating systems have zerotier packages.
+如果你有一个可以运行 zerotier 的路由器，你应该使用它而不是这篇文章。许多路由器供应商和操作系统都有 zerotier 软件包。
+
+Possible Disadvantages  可能的缺点
+No broadcast/multicast across networks (but the mobile OS's don't allow this anyways).
+没有跨网络广播/多播（但移动操作系统无论如何都不允许这样做）。
+
+Can't initiate connections from the LAN to an external ZeroTier client.
+无法启动从 LAN 到外部 ZeroTier 客户端的连接。
+
+Summary  总结
+Install ZeroTier  安装 ZeroTier
+Add a managed route to the ZeroTier network (at my.zerotier.com)
+将托管路由添加到 ZeroTier 网络（在 my.zerotier.com）
+Enable IP Forwarding  启用 IP 转发
+Configure iptables  配置 iptables
+Required information  所需信息
+For Example:  例如：
+
+Info  信息	Example  例	Shorthand Name Below  下面的简写名称
+ZeroTier Network ID  ZeroTier 网络 ID	d5e04297a19bbd70	$NETWORK_ID
+ZeroTier Interface Name  ZeroTier 接口名称	zt7nnig26	$ZT_IFACE
+Physical Interface Name  物理接口名称	eth0  以太 0	$PHY_IFACE
+ZeroTier subnet  ZeroTier 子网	172.27.0.0/16	
+Physical subnet  物理子网	192.168.100.0/24	$PHY_SUB
+ZeroTier IP Address of "Router"
+“路由器”的零层 IP 地址	172.27.0.1	$ZT_ADDR
+Install ZeroTier  安装 ZeroTier
+https://www.zerotier.com/download/
+
+sudo zerotier-cli join $NETWORK_ID
+sudo zerotier-cli listnetworks
+
+Authorize it at my.zerotier.com/network/$NETWORK_ID
+授权时间 my.zerotier.com/network/$NETWORK_ID
+
+The listnetworks output has the ZeroTier Interface name under <dev>
+listnetworks 输出在 <dev> 下具有 ZeroTier 接口名称
+
+Configure the ZeroTier managed route
+配置 ZeroTier 托管路由
+At my.zerotier.com/network/$NETWORK_ID->Settings->Managed Routes
+在 my.zerotier.com/network/$NETWORK_ID ->Settings->Managed 路由
+
+This adds another route to every device joined to the ZeroTier network.
+这会向加入 ZeroTier 网络的每个设备添加另一条路由。
+
+Destination  目的地	(Via)  （通过）
+$PHY_SUB	$ZT_ADDR
+For example:  例如：
+
+Destination  目的地	(Via)  （通过）
+192.168.100.0/23	172.27.0.1
+Configure the destination route as slightly larger than the actual physical subnet, here /23 instead of /24 (a smaller number is a bigger subnet in this notation) This makes devices that are on both the physical and the ZeroTier network prefer the physical connection.
+将目标路由配置为略大于实际物理子网，此处为 /23 而不是 /24（在此表示法中，较小的数字表示较大的子网）这使得物理和 ZeroTier 网络上的设备首选物理连接。
+
+Enable IP forwarding  启用 IP 转发
+This can vary depending on linux distribution. Typically:
+这可能因 Linux 发行版而异。通常：
+
+Edit /etc/sysctl.conf to uncomment net.ipv4.ip_forward. This enables forwarding at boot.
+编辑 /etc/sysctl.conf 以取消注释net.ipv4.ip_forward。这将启用启动时转发。
+
+To enable it now  立即启用
+
+sudo sysctl -w net.ipv4.ip_forward=1
+
+Configure iptables  配置 iptables
+Assign some shell variables (personalize these)
+分配一些 shell 变量（个性化这些）
+
+PHY_IFACE=eth0; ZT_IFACE=zt7nnig26
+
+Add rules to iptables  向 iptables 添加规则
+
+sudo iptables -t nat -A POSTROUTING -o $PHY_IFACE -j MASQUERADE
+sudo iptables -A FORWARD -i $PHY_IFACE -o $ZT_IFACE -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i $ZT_IFACE -o $PHY_IFACE -j ACCEPT
+
+
+Save iptables rules for next boot
+保存 iptables 规则以供下次启动
+
+sudo apt install iptables-persistent
+sudo bash -c iptables-save > /etc/iptables/rules.v4
+
+Test  测试
+Turn off wifi on your phone
+关闭手机上的 wifi
+Join it to the zerotier network, authorize it
+加入 zerotier 网络，授权
+Try to access something on the physical LAN
+尝试访问物理 LAN 上的某些内容
