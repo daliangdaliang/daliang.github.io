@@ -1,0 +1,61 @@
+主要步骤
+1.登录阿里云，注册后采用试用，用了云服务器ecs实例，用的系统是ubuntu，服务器位于河源，有一个公网ip等等
+2.查找网页，后台登录管理，先安装并授权zerotier，
+
+curl -s https://install.zerotier.com | sudo bash
+
+然后再加入，并授权
+
+3.将节点转化为moon，
+
+命令为
+
+cd /var/lib/zerotier-one
+zerotier-idtool initmoon identity.public > moon.json
+
+然后用vim修改这个moon.json的配置文件，输入之前先按键盘“i”，将其变为插入模式，然后设置好
+退出先按esc，然后再“：wq”，回车保存退出
+
+zerotier-idtool genmoon moon.json
+
+mkdir /var/lib/zerotier-one/moons.d/
+cp 0000006xxxxxxxxx.moon /var/lib/zerotier-one/moons.d/
+
+systemctl restart zerotier-one
+
+4.将特定节点加入mooc的节点
+
+zerotier-cli listpeers 查看当前节点
+zerotier-cli join <network ID> 加入网络
+zerotier-cli leave <network ID> 退出网络
+zerotier-cli orbit <world ID> <world ID> 加入月亮节点
+zerotier-cli deorbit <world ID> 退出月亮节点
+
+
+这里特别注意，可以不用复制moon.json文件出来，所有的节点操作都类似。可以采取
+
+zerotier-cli orbit <world ID> <world ID> 加入月亮节点
+
+注意这里的world id命令，可以查看管理后台，或者通过peers命令查看，一定要一样才能成功
+
+另外windows下需要通过cmd的管理员模式进入cmd命令，linux要root，然后重新启动服务（wins下面通过服务右键重启）
+
+然后通过zerotier-cli peers 就可以看到moon节点
+
+如果通过zerotier-cli listmoons就可以打开moon的配置
+
+但是现在实际效果，并不是特别理想，链接还是不够稳定。
+
+
+
+
+
+参考
+
+1.官方的设置 
+https://docs.zerotier.com/roots/
+2.知乎的设置
+https://zhuanlan.zhihu.com/p/378698808
+https://zhuanlan.zhihu.com/p/507274316
+https://zhuanlan.zhihu.com/p/1951767155029817237
+https://zhuanlan.zhihu.com/p/534594804
