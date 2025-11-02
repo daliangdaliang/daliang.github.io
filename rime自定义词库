@@ -1,0 +1,97 @@
+女朋友希望能在输入法使用自定义的词库，开始打算使用搜狗，后来尝试，发现不需要。
+
+1.词库部分：
+检索
+qq输入法词库  https://qq.pinyin.cn/
+搜狗输入法词库  https://pinyin.sogou.com/dict/
+
+找到相应词库，然后使用工具转化为中州韵的格式
+
+转化使用 深蓝词汇转化工具
+
+https://github.com/studyzy/imewlconverter
+
+选择对应的格式即可
+
+
+
+
+2.配置部分
+
+（1）词典管理添加
+可以使用ui界面的词典管理，然后将转化后的txt文本导入
+
+（2）专门词库挂载
+在rime的用户文件夹下 C:\Users\Ethan\AppData\Roaming\Rime
+
+创建一个文件，myDict.dict.yaml
+
+--------------内容如下---------------
+#myDict.dict.yaml
+name: myDict                 #必须与文件名相同，此处不加文件后缀 
+version: "2025.11.2" 
+sort: by_weight 
+use_preset_vocabulary: true ​ 
+import_tables:              #导入词库
+   #- mydict/falvcihuidaquan                       #将所有词库以这种方式写入
+   - mydict/chegnyusuyu.dict.yaml                       #注意，不需要写扩展名
+   - mydict/ciyuan1.dict.yaml 
+   - mydict/ciyuan2.dict.yaml
+   - mydict/changyonwenyanwencik.dict.yaml
+   - mydict/ciyuan3.dict.yaml
+   - mydict/daojiaocihuidaquan.dict.yaml
+   - mydict/falvcihuidaquan.dict.yaml
+   - mydict/fanyililuncihui.dict.yaml
+   - mydict/fojiaocihuidaquan.dict.yaml
+   - mydict/gudaihanyuchangyongcihui.dict.yaml
+   - mydict/hongloumengcihuidaquan.dict.yaml
+   - mydict/sanzichengyu.dict.yaml
+   - mydict/shuowenjiezixu.dict.yaml
+   - mydict/xiandaihanyucidian2.dict.yaml
+   - mydict/yuyonxue.dict.yaml
+   - mydict/zhexuecihuidaquan.dict.yaml
+   - mydict/zhongguolishicihuidaquan.dict.yaml
+   - mydict/zhongyong.dict.yaml
+   - mydict/zhuzizhijiageyan.dict.yaml
+   #- E                      #此处加入#相当于屏蔽了词库E，后期需要使用去掉#即可
+------------------------------------
+
+创建一个文件夹 mydict
+
+将在其他词库中检索，并转化好的文件复制到mydict文件夹下，将其文件名假如到import模块内
+
+
+另外，在C:\Users\Ethan\AppData\Roaming\Rime\default.custom.yaml
+
+中增加一个补丁部分，增加自定义词典
+
+-------内容-----------
+
+# 以 patch: 开头，后面的内容都需要缩进
+patch:
+# myDict.schema.yaml
+
+translator:
+  dictionary: myDict # 挂载词库文件 myDict.dict.yaml
+
+----------------------
+
+其中指向了myDict这个文件，词库文件都放在mydict文件夹内。当然，也可以直接加在luna_pinyin_tw.schema.yaml这个文件里面，但是我担心写错。参考了
+
+以 patch 的方式打补丁
+文件名为 xxx.custom.yaml，内容以 patch: 开头的，是补丁文件，注意缩进，可以对原配置进行覆盖和追加。
+
+方案 xxx.schema.yaml 的补丁文件是 xxx.custom.yaml
+default.yaml squirrel.yaml 就是把结尾的 .yaml 改成 .custom.yaml
+
+所以，也可以用patch的形式。
+
+另外，我发现在配置文件夹里面，sync里面，是对外部文件的一个备份，带了一个id的文件夹。
+
+现在还有一个问题就是，我开始用了ui界面词典管理添加的内容，如何删除掉。
+
+
+参考
+https://dvel.me/posts/rime-ice/#%e6%8c%82%e8%bd%bd%e8%87%aa%e5%b7%b1%e7%9a%84%e8%af%8d%e5%ba%93
+https://zhuanlan.zhihu.com/p/471412208
+https://dev.leiyanhui.com/linux/fctix5-sogou/
