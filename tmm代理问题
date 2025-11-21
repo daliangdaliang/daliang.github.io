@@ -1,0 +1,4 @@
+unknownhostexception api.themovedb.org
+在debian中的docker里面运行了tinymediamanager，刮削的时候出现了这个问题。应该如何解决？现在v2raya中，已经将api.themoviedb.org，www.themoviedb.org，image.tmdb.org设置为代理访问，还是不行。
+
+最后还是在docker里面，从tmm的界面中找到了http代理，手动再填入http代理地址才搞定。
