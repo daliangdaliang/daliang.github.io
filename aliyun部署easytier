@@ -1,0 +1,47 @@
+1.购买阿里云服务器
+2.安装easytier，系统为debian
+wget -O /tmp/easytier.sh "https://raw.githubusercontent.com/EasyTier/EasyTier/main/script/install.sh" && sudo bash /tmp/easytier.sh install --gh-proxy https://ghfast.top/
+（https://easytier.cn/guide/installation.html）
+3.在修改配置文件
+
+root@iZb:/opt/easytier/config# cat default.conf 
+instance_name = "XXXXXX"
+ipv4 = "10.126.126.200/24"
+dhcp = false
+listeners = [
+    "tcp://0.0.0.0:11010",
+    "udp://0.0.0.0:11010",
+    "wg://0.0.0.0:11011",
+    "ws://0.0.0.0:11011/",
+    "wss://0.0.0.0:11012/",
+]
+exit_nodes = []
+rpc_portal = "0.0.0.0:0"
+
+[[peer]]
+uri = "tcp://public.easytier.top:11010"
+
+[network_identity]
+network_name = "XXXXXXXX"
+network_secret = "XXXXXXXXX"
+
+[flags]
+default_protocol = "udp"
+dev_name = ""
+enable_encryption = true
+enable_ipv6 = true
+mtu = 1380
+latency_first = false
+enable_exit_node = false
+no_tun = false
+use_smoltcp = false
+foreign_network_whitelist = "*"
+disable_p2p = false
+p2p_only = false
+relay_all_peer_rpc = false
+disable_tcp_hole_punching = false
+disable_udp_hole_punching = false
+private_mode = true
+
+特别注意，如果是没有任何参数启动，会当作服务器
+最后加上私有模式private_mode = true，不允许他人链接。
