@@ -156,3 +156,8 @@ API Key / Master Key：填写你的强密码 XXXXXXXXX。
 Index UID（索引名）：输入 openlist-win（切记：必须与 NAS 的不同）[1]。
 保存设置，并在 Windows 端点击 构建索引。
 此时你可以刷新你之前打开的 http://192.168.196.215:7700 Meilisearch 控制台，你会发现在左侧的索引下拉列表中，多出了一个 openlist-win 的选项，里面正在飞速增加 Windows 扫出来的文件文档！
+
+
+-----------------------------openlist迁移到omv5实体------------------
+1.会出现meilireasearch还没在docker启动的问题
+2.解决方案就是到openlist后台，关闭搜索引擎，再打开保存就可以了。
