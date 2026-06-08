@@ -1,0 +1,22 @@
+命令是一样的
+sudo zerotier-cli orbit <moon_node_id> <moon_node_id>
+
+关键是要sudo在前面
+
+另外在macair中进入命令行的方式
+在 MacBook Air 上，你可以通过以下几种最快的方式打开命令行（终端/Terminal）：
+💡 快捷键搜索（最推荐）
+1.同时按下 Command (⌘) + 空格键 唤醒 Spotlight 搜索框。
+2.输入 Terminal 或 终端
+3.按下 回车键 (Enter) 即可打开。
+
+📂 通过应用程序文件夹
+1.打开桌面上的 访达 (Finder)。
+2.点击左侧栏的 应用程序 (Applications)。
+3.找到并打开 实用工具 (Utilities) 文件夹。
+4.双击 终端 (Terminal) 图标。
+
+🚀 通过启动台 (Launchpad)
+1.在触控板上 四指捏合，或点击程序栏（Dock）的 火箭图标 进入启动台。
+2.找到并点击 其他 (Other) 文件夹（通常包含很多系统工具）。
+3.点击 终端 (Terminal)。
